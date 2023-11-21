@@ -62,6 +62,7 @@ class VIEW3D_MT_PIE_SSC_New_Obj(Menu):
 
         else:
             pie.operator("mesh.primitive_cube_add", text="Cube", icon="MESH_CUBE")
+            #pie.operator("wm.tool_set_by_id", text = "ICube", icon = "MESH_CUBE").name = 'builtin.primitive_cube_add'
 
         # 2 - BOTTOM
         if qblocker:
@@ -88,16 +89,52 @@ class VIEW3D_MT_PIE_SSC_New_Obj(Menu):
             pie.operator("mesh.primitive_uv_sphere_add", text="Sphere", icon="MESH_UVSPHERE")
 
         # 7 - TOP - LEFT
-        pie.operator("object.light_add", text="Light", icon="OUTLINER_OB_LIGHT").type = 'POINT'
+        pie.operator("object.text_add", text="Text", icon="SYNTAX_OFF")
 
         # 9 - TOP - RIGHT
-        pie.operator("object.camera_add", text="Camera", icon="OUTLINER_OB_CAMERA")
+        pie.operator("machin3.quadsphere", text="Quad Sphere", icon="MESH_UVSPHERE")
         # 1 - BOTTOM - LEFT
-        pie.operator("object.gpencil_add", text="Gpencil", icon="OUTLINER_OB_GREASEPENCIL").type = 'EMPTY'
-
-        # 3 - BOTTOM - RIGHT
         pie.operator("object.empty_add", text="Empty", icon="OUTLINER_OB_EMPTY").type = 'PLAIN_AXES'
 
+        # 3 - BOTTOM - RIGHT
+        pie.operator("mesh.primitive_plane_add", text="Plane", icon="MESH_PLANE")
+
+class VIEW3D_MT_PIE_INTERACTIVE_CREATE(Menu):
+    # bl_idname = "mesh.ssc_new_obj_menu"
+    bl_label = "Interactive Object Creation"
+
+    def draw(self, context):
+        layout = self.layout
+        pie = layout.menu_pie()
+
+        #qblocker = get_qblocker_active() and get_ssc_qblocker_integration()
+        #bezierutils = get_bezierutilities_active() and get_ssc_bezierutilities_integration()
+
+        # 4 - LEFT
+        pie.operator("object.torus_create", text = "QB Torus", icon = "MESH_TORUS")
+
+        # 6 - RIGHT
+        pie.operator("object.box_create", text = "QB Cube", icon = "MESH_CUBE")
+
+        # 2 - BOTTOM
+        
+        pie.operator("object.cylinder_create", text = "Qb Cylinder", icon = "MESH_CYLINDER")
+
+        # 8 - TOP
+        
+        pie.operator("object.sphere_create", text = "QB Sphere", icon = "MESH_UVSPHERE")
+
+        # 7 - TOP - LEFT
+        pie.operator("object.pyramid_create", text = "QB Pyramid", icon = "TRIA_UP")
+
+        # 9 - TOP - RIGHT
+        pie.operator("object.spherecube_create", text = "QB Sphere Cube", icon = "MESH_UVSPHERE")
+
+        # 1 - BOTTOM - LEFT
+        pie.operator("object.convert_to_qblock", text = "QB Convert to QBlock", icon = "MESH_CUBE")
+
+        # 3 - BOTTOM - RIGHT
+        pie.operator("object.cornercube_create", text = "QB Corner Cube", icon = "MESH_CUBE")
 
 class VIEW3D_MT_PIE_SM_object(Menu):
     # bl_idname = "mesh.ssc_new_obj_menu"
@@ -375,6 +412,17 @@ class VIEW3D_MT_PIE_SM_mesh(Menu):
 
         # 3 - BOTTOM - RIGHT
 
+        #Up - Subdivide
+        #Down - Merge Collapse
+        #Left - Flatten
+        #Right - LoopTool Panel
+        
+        #Upper Right -
+        #Upper Left - Triangulate
+        
+        #lower Right - Safe N-Gon
+        #lower Left - Tris To Quad
+        
         # Align World Submenu
         """
         submenu = pie.column()

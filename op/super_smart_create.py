@@ -68,10 +68,10 @@ class SuperSmartCreate(bpy.types.Operator):
 
         if mode == 'OBJECT':
             if len(itools.get_selected()) > 0:
-                bpy.ops.wm.call_menu_pie(name="VIEW3D_MT_PIE_SSC_Duplicate")
+                bpy.ops.wm.call_menu_pie(name="VIEW3D_MT_PIE_INTERACTIVE_CREATE")
 
             else:
-                bpy.ops.wm.call_menu_pie(name="VIEW3D_MT_PIE_SSC_New_Obj")
+                bpy.ops.wm.call_menu_pie(name="VIEW3D_MT_PIE_NUUB_ke_fitprim_add")
 
         # if Vertex is selected
         elif mode == 'VERT':
@@ -81,15 +81,17 @@ class SuperSmartCreate(bpy.types.Operator):
             if len(selection) == 0:
                 bpy.ops.mesh.knife_tool('INVOKE_DEFAULT')
 
-            elif len(selection) == 1 or (mesh.verts_share_edge(selection) and mesh.are_border_verts(selection)):
-                if get_f2_active():
-                    mesh_f2.bpy.ops.mesh.f2('INVOKE_DEFAULT')
+            elif len(selection) == 1:
+                bpy.ops.mesh.knife_tool('INVOKE_DEFAULT')
+                #if get_f2_active():
+                    #mesh_f2.bpy.ops.mesh.f2('INVOKE_DEFAULT')
 
             elif mesh.verts_share_face(selection):
                 self.connect_verts_to_last(selection)
 
             else:
-                bpy.ops.mesh.vert_connect()
+                #bpy.ops.mesh.vert_connect()
+                bpy.ops.mesh.ke_context_connect()
 
         # if Edge is selected
         elif mode == 'EDGE':
@@ -100,7 +102,9 @@ class SuperSmartCreate(bpy.types.Operator):
                 bpy.ops.mesh.loopcut_slide('INVOKE_DEFAULT')
 
             elif len(selection) == 1:
-                self.split_edge_select_vert()
+                #self.split_edge_select_vert()
+                bpy.ops.mesh.loop_multi_select(ring=True)
+                bpy.ops.mesh.ke_context_connect()
 
             elif mesh.is_border(selection):
                 bpy.ops.mesh.edge_face_add()
@@ -108,7 +112,8 @@ class SuperSmartCreate(bpy.types.Operator):
                     itools.set_mode('FACE')
 
             elif mesh.is_ring(selection):
-                self.split_edges_make_loop(selection)
+                #self.split_edges_make_loop(selection)
+                bpy.ops.mesh.ke_context_connect()
 
             elif mesh.is_adjacent(selection, mode) and mesh.is_partial_border(selection):
                 bpy.ops.mesh.edge_face_add()
@@ -123,6 +128,9 @@ class SuperSmartCreate(bpy.types.Operator):
             bm = itools.get_bmesh()
             selection = itools.get_selected()
 
+            if len(selection) == 0:
+                bpy.ops.wm.call_menu_pie(name="VIEW3D_MT_PIE_INTERACTIVE_CREATE")
+
             if len(selection) == 1:
                 self.quad_fill()
 
@@ -133,8 +141,11 @@ class SuperSmartCreate(bpy.types.Operator):
                 except:
                     print("Cant bridge selection")
 
-            else:
-                bpy.ops.mesh.subdivide()
+            #else:
+                #bpy.ops.mesh.subdivide()
+                #bpy.ops.mesh.ke_context_connect()
+            if len(selection) > 0:
+                bpy.ops.mesh.ke_context_connect()
 
         # if curve selected
         elif mode == 'EDIT_CURVE':
